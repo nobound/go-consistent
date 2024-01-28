@@ -1,3 +1,3 @@
-module github.com/nobound/go-consistent/chash
+module github.com/nobound/go-consistent
 
 go 1.21.4
