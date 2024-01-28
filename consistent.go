@@ -1,4 +1,4 @@
-package go-consistent
+package chash
 
 import (
 	"crypto/md5"
