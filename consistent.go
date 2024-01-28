@@ -32,17 +32,7 @@ func (x SortedKeys) Len() int {
 }
 
 func (x SortedKeys) Less(i, j int) bool {
-	rv := x[i].Cmp(x[j].Int) < 0
-	if show {
-		if rv {
-			fmt.Println(x[i], " < ")
-			fmt.Println(x[j])
-		} else {
-			fmt.Println(x[i], " >= ")
-			fmt.Println(x[j])
-		}
-	}
-	return rv
+	return (x[i].Cmp(x[j].Int) < 0)
 }
 
 func (x SortedKeys) Swap(i, j int) {
@@ -171,21 +161,7 @@ func (c *ConsistentHashing) searchRingIndex(obj string) int {
 	fn := func(i int) bool {
 		x := c.sortedHashKeys[i]
 		y := targetKey
-		rv := x.Cmp(y.Int) > 0
-		// debug
-		if show {
-			fmt.Println(i)
-			if rv {
-				// ture when x >= y
-				fmt.Println(x, " >= ")
-				fmt.Println(y)
-			} else {
-				// false when x < y
-				fmt.Println(x, " < ")
-				fmt.Println(y)
-			}
-		}
-		return rv
+		return (x.Cmp(y.Int) > 0)
 	}
 
 	targetIndex := sort.Search(count, fn)
