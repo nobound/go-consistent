@@ -1,4 +1,4 @@
-package go_consistent
+package chash
 
 import (
 	"crypto/md5"
@@ -8,8 +8,6 @@ import (
 	"sort"
 	"sync"
 )
-
-var show bool = false
 
 type Bignum struct {
 	*big.Int
@@ -56,7 +54,7 @@ type Config struct {
 }
 
 // ConsistentHashing structure
-type ConsistentHashing struct {
+type ConsistentHash struct {
 	config         Config
 	sortedHashKeys SortedKeys
 	ring           map[string]string
@@ -65,8 +63,8 @@ type ConsistentHashing struct {
 }
 
 // Create new Consistent Hashing instance
-func New(config Config) *ConsistentHashing {
-	c := &ConsistentHashing{
+func New(config Config) *ConsistentHash {
+	c := &ConsistentHash{
 		config:  config,
 		ring:    make(map[string]string),
 		dataSet: make(map[string]bool),
@@ -76,8 +74,8 @@ func New(config Config) *ConsistentHashing {
 
 // Create new Consistent Hashing instance
 // with nodes
-func NewWithNodes(nodes []string, config Config) *ConsistentHashing {
-	c := &ConsistentHashing{
+func NewWithNodes(nodes []string, config Config) *ConsistentHash {
+	c := &ConsistentHash{
 		config:  config,
 		ring:    make(map[string]string),
 		dataSet: make(map[string]bool),
@@ -89,7 +87,7 @@ func NewWithNodes(nodes []string, config Config) *ConsistentHashing {
 }
 
 // Get a nearest object name from input object in consistent hashing ring
-func (c *ConsistentHashing) Get(key string) string {
+func (c *ConsistentHash) Get(key string) string {
 	index := c.searchRingIndex(key)
 	skey := c.sortedHashKeys[index]
 	s := skey.String()
@@ -101,7 +99,7 @@ func (c *ConsistentHashing) Get(key string) string {
 }
 
 // Add the name of the node (string) to the ring
-func (c *ConsistentHashing) Add(nodename string) {
+func (c *ConsistentHash) Add(nodename string) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -115,7 +113,7 @@ func (c *ConsistentHashing) Add(nodename string) {
 }
 
 // Delete the node (string) from the ring
-func (c *ConsistentHashing) Remove(nodename string) {
+func (c *ConsistentHash) Remove(nodename string) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -128,7 +126,7 @@ func (c *ConsistentHashing) Remove(nodename string) {
 }
 
 // Get all the node from the ring
-func (c *ConsistentHashing) GetNodeNames() []string {
+func (c *ConsistentHash) GetNodeNames() []string {
 	var out []string
 	for k, _ := range c.dataSet {
 		out = append(out, k)
@@ -137,7 +135,7 @@ func (c *ConsistentHashing) GetNodeNames() []string {
 }
 
 // Based on the number of replicas, this will return array of node names
-func (c *ConsistentHashing) getNodeKeys(nodename string) map[string]*Bignum {
+func (c *ConsistentHash) getNodeKeys(nodename string) map[string]*Bignum {
 	out := make(map[string]*Bignum)
 	for i := 0; i < c.config.ReplicationFactor; i++ {
 		s := fmt.Sprintf("%s:%d", nodename, i)
@@ -150,7 +148,7 @@ func (c *ConsistentHashing) getNodeKeys(nodename string) map[string]*Bignum {
 // The node replica with a hash value nearest but not less than that of the given
 // name is returned.   If the hash of the given name is greater than the greatest
 // hash, returns the lowest hashed node.
-func (c *ConsistentHashing) searchRingIndex(obj string) int {
+func (c *ConsistentHash) searchRingIndex(obj string) int {
 	count := len(c.sortedHashKeys)
 	targetKey := c.hashKey(obj)
 
@@ -171,7 +169,7 @@ func (c *ConsistentHashing) searchRingIndex(obj string) int {
 	return targetIndex
 }
 
-func (c *ConsistentHashing) updateSortHashKeys() {
+func (c *ConsistentHash) updateSortHashKeys() {
 	c.sortedHashKeys = nil
 	for nodename, _ := range c.dataSet {
 		key := c.hashKey(nodename)
@@ -180,6 +178,6 @@ func (c *ConsistentHashing) updateSortHashKeys() {
 	sort.Sort(c.sortedHashKeys)
 }
 
-func (c *ConsistentHashing) hashKey(obj string) *Bignum {
+func (c *ConsistentHash) hashKey(obj string) *Bignum {
 	return md5_sum([]byte(obj))
 }
