@@ -24,7 +24,7 @@ func assignTopics(hash *chash.ConsistentHash, node string, topics Topics) Topics
 	return out
 }
 
-func TestAssignment() {
+func main() {
 	nodes := []string{"node1", "node2"}
 	topics := []string{"topic1", "topic2", "topic3", "topic4", "topic5", "topic6"}
 	replicas := 16
