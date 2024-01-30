@@ -24,6 +24,7 @@ func assignTopics(hash *chash.ConsistentHash, node string, topics Topics) Topics
 	return out
 }
 
+// Assign multiple topics among the nodes
 func main() {
 	nodes := []string{"node1", "node2"}
 	topics := []string{"topic1", "topic2", "topic3", "topic4", "topic5", "topic6"}
@@ -47,4 +48,13 @@ func main() {
 
 ```
 
+## Distribution and Performance
+
+We utilize the implementation to distribute 64,000 distinct topics across 10 nodes, taking into account different replica counts. This allows us to assess both the implementation's effectiveness in distributing topics among the nodes and the efficiency of the calculation process.
+
+| Number of replicas | Total Duration (ms) | Standard Deviation |
+|               ---: |                ---: |               ---: | 
+|                 50 |                 770 |            1141.21 |
+|                100 |                 791 |             504.31 |
+|                200 |                 809 |             450.69 |
 
