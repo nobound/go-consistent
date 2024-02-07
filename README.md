@@ -1,7 +1,11 @@
 
 # Go-Consistent
 
-The `go-consistent` module serves as an implementation of the consistent hashing algorithm in the Go programming language. This algorithm is widely recognized and found applications in various domains. For a comprehensive understanding of the consistent hashing algorithm and its practical implementations, additional insights can be obtained through a simple online search. (e.g., https://ably.com/blog/implementing-efficient-consistent-hashing)
+The `go-consistent` module serves as an implementation of the consistent hashing algorithm in the Go programming language. This algorithm is widely recognized and found applications in various domains. 
+
+Consistent hashing offers an effective solution to the challenge of rehashing by providing a mechanism to distribute the load evenly across a distributed system. This approach not only mitigates the need for frequent rehashing but also ensures that the distribution of data remains balanced even as nodes are added or removed from the system.
+
+For a comprehensive understanding of the consistent hashing algorithm and its practical implementations, additional insights can be obtained through a simple online search. (e.g., https://ably.com/blog/implementing-efficient-consistent-hashing)
 
 ## Usage
 
@@ -50,11 +54,12 @@ func main() {
 
 ## Distribution and Performance
 
-We utilize the implementation to distribute 64,000 distinct topics across 10 nodes, taking into account different replica counts. This allows us to assess both the implementation's effectiveness in distributing topics among the nodes and the efficiency of the calculation process.
+The implementation is utilized to distribute 64,000 distinct topics across 10 nodes, taking into account different replica counts. This is used to assess both the implementation's effectiveness in distributing topics among the nodes and the efficiency of the calculation process.
 
 | Number of replicas | Total Duration (ms) | Standard Deviation |
 |               ---: |                ---: |               ---: | 
 |                 50 |                 770 |            1141.21 |
 |                100 |                 791 |             504.31 |
 |                200 |                 809 |             450.69 |
+
 
