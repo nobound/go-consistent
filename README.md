@@ -58,8 +58,9 @@ The implementation is utilized to distribute 64,000 distinct topics across 10 no
 
 | Number of replicas | Total Duration (ms) | Standard Deviation |
 |               ---: |                ---: |               ---: | 
-|                 50 |                 770 |            1141.21 |
-|                100 |                 791 |             504.31 |
-|                200 |                 809 |             450.69 |
+|                 50 |                 430 |            1141.21 |
+|                100 |                 449 |             504.31 |
+|                200 |                 463 |             450.69 |
+|                400 |                 497 |             233.30 |
 
 
